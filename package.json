@@ -1,0 +1,32 @@
+{
+  "name": "ssr-camp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:start\"",
+    "dev:client": "webpack --config webpack.client.js --watch",
+    "dev:server": "webpack --config webpack.server.js --watch",
+    "dev:start": "nodemon --watch build --exec node \"./build/bundle.js\""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "concurrently": "^5.2.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependency": {
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
