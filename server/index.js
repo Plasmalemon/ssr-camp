@@ -3,10 +3,11 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import express from 'express'
+import { Provider } from 'react-redux'
 
 import App from '../src/App'
 import { StaticRouter } from 'react-router-dom'
-
+import store from '../src/store/store'
 
 const app = express()
 app.use(express.static('public'))
@@ -15,9 +16,11 @@ app.get('*', (req, res) => {
     // const Page = <App title="ssr"></App>
     // 把react组件解析成html
     const content = renderToString(
-        <StaticRouter location={req.url}>
-            {App}
-        </StaticRouter>
+        <Provider store={store}>
+            <StaticRouter location={req.url}>
+                {App}
+            </StaticRouter>
+        </Provider>
     )
     // 字符串模板
     res.send(`
