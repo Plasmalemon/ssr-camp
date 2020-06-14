@@ -5,15 +5,20 @@ import { renderToString } from 'react-dom/server'
 import express from 'express'
 
 import App from '../src/App'
+import { StaticRouter } from 'react-router-dom'
 
 
 const app = express()
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     // const Page = <App title="ssr"></App>
     // 把react组件解析成html
-    const content = renderToString(App)
+    const content = renderToString(
+        <StaticRouter location={req.url}>
+            {App}
+        </StaticRouter>
+    )
     // 字符串模板
     res.send(`
     <html>
