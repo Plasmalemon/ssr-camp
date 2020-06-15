@@ -7,9 +7,12 @@ function Index(props) {
     const [count, setCount] = useState(1)
 
     // 在server端进行
-    // useEffect(() => {
-    //     props.getIndexList()
-    // }, []);
+    useEffect(() => {
+        if (!props.list.length) {
+            // 客户端获取数据
+            props.getIndexList()
+        }
+    }, []);
 
     return <div>
         <h1>hello,{props.title}</h1>
