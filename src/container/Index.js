@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getIndexList } from '../store/index'
+import store from '../store/store'
 
 function Index(props) {
     const [count, setCount] = useState(1)
 
-    useEffect(() => {
-        props.getIndexList()
-    }, []);
+    // 在server端进行
+    // useEffect(() => {
+    //     props.getIndexList()
+    // }, []);
 
     return <div>
         <h1>hello,{props.title}</h1>
@@ -21,6 +23,10 @@ function Index(props) {
             }
         </ul>
     </div>
+}
+
+Index.loadData = (store) => {
+    return store.dispatch(getIndexList())
 }
 
 export default connect(
