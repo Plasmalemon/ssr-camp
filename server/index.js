@@ -24,10 +24,15 @@ app.get('*', (req, res) => {
         if (match) {
             const { loadData } = route.component
             if (loadData) {
-                promises.push(loadData(store))
+                const promise = new Promise((resolve, reject) => {
+                    loadData(store).then(resolve).catch(resolve)
+                })
+                promises.push(promise)
+                // promises.push(loadData(store))
             }
         }
     })
+    console.log(promises)
     // 等待所有网络请求
     Promise.all(promises).then(() => {
         // const Page = <App title="ssr"></App>
@@ -56,6 +61,8 @@ app.get('*', (req, res) => {
                 </body>
             </html>
     `)
+    }).catch(() => {
+        res.send('报错了')
     })
 })
 
