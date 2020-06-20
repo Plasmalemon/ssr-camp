@@ -10,8 +10,8 @@ const changeUserInfo = userinfo => ({
 })
 
 export const getUserInfo = server => {
-    return (dispatch, getState, axiosInstance) => {
-        return axios.get('http://localhost:9090/api/user/info').then(res => {
+    return (dispatch, getState, $axios) => {
+        return $axios.get('/api/user/info').then(res => {
             const { data } = res.data;
             dispatch(changeUserInfo(data))
         })
