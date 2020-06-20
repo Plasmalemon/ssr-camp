@@ -4,7 +4,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import express from 'express'
 import { Provider } from 'react-redux'
-
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import routes from '../src/App'
 import { StaticRouter, matchPath, Route } from 'react-router-dom'
 import { getServerStore } from '../src/store/store'
@@ -14,6 +14,13 @@ const store = getServerStore()
 
 const app = express()
 app.use(express.static('public'))
+
+
+// 客户端来的api开头的请求
+app.use(
+    '/api',
+    createProxyMiddleware({ target: "http://localhost:9090/", changeOrigin: true })
+)
 
 app.get('*', (req, res) => {
     // 根据路由渲染组件，并且拿到loadDate方法 获取数据
@@ -32,7 +39,7 @@ app.get('*', (req, res) => {
             }
         }
     })
-    console.log(promises)
+    // console.log(promises)
     // 等待所有网络请求
     Promise.all(promises).then(() => {
         // const Page = <App title="ssr"></App>
@@ -61,8 +68,6 @@ app.get('*', (req, res) => {
                 </body>
             </html>
     `)
-    }).catch(() => {
-        res.send('报错了')
     })
 })
 
