@@ -31,6 +31,7 @@ function withStyle(Comp, styles) {
         return <Comp {...props} />
     }
     hoistNonReactStatic(NewComp, Comp)
+    //     NewComp.loadData = Comp.loadData
     return NewComp
 }
 
