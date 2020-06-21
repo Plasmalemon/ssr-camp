@@ -14,6 +14,7 @@ const store = getServerStore()
 
 const app = express()
 app.use(express.static('public'))
+// console.log()
 
 
 // 客户端来的api开头的请求
@@ -42,7 +43,9 @@ app.get('*', (req, res) => {
     // console.log(promises)
     // 等待所有网络请求
     Promise.all(promises).then(() => {
-        const context = {}
+        const context = {
+            css: []
+        }
         // const Page = <App title="ssr"></App>
         // 把react组件解析成html
         const content = renderToString(
@@ -64,12 +67,18 @@ app.get('*', (req, res) => {
             res.redirect(301, context.url)
         }
 
+        const css = context.css.join('\n')
+        // console.log(css)
+
         // 字符串模板
         res.send(`
             <html>
                 <head>
                     <meta charset="utf-8" />
                     <title>react ssr</title>
+                    <style>
+                        ${css}
+                    </style>
                 </head>
                 <body>
                     <div id="root">${content}</div>
