@@ -10,6 +10,7 @@ import routes from '../src/App'
 import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 import { getServerStore } from '../src/store/store'
 import Header from '../src/component/Header'
+import config from './config'
 
 const store = getServerStore()
 
@@ -35,7 +36,7 @@ app.get('*', (req, res) => {
     // 通过路由参数
     // 配置开启csr
     // 服务器负载过高开启csr
-    if (req.query._mode == 'csr') {
+    if (config.csr) {
         console.log('ssr开启降级渲染')
         return csrRender(res)
     }
