@@ -6,7 +6,7 @@ import express from 'express'
 import { Provider } from 'react-redux'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import routes from '../src/App'
-import { StaticRouter, matchPath, Route } from 'react-router-dom'
+import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 import { getServerStore } from '../src/store/store'
 import Header from '../src/component/Header'
 
@@ -42,16 +42,28 @@ app.get('*', (req, res) => {
     // console.log(promises)
     // 等待所有网络请求
     Promise.all(promises).then(() => {
+        const context = {}
         // const Page = <App title="ssr"></App>
         // 把react组件解析成html
         const content = renderToString(
             <Provider store={store}>
-                <StaticRouter location={req.url}>
+                <StaticRouter location={req.url} context={context}>
                     <Header />
-                    {routes.map(route => <Route {...route} />)}
+                    <Switch>
+                        {routes.map(route => <Route {...route} />)}
+                    </Switch>
                 </StaticRouter>
             </Provider>
         )
+        // console.log('context', context)
+        if (context.statusCode) {
+            res.status(context.statusCode)
+        }
+
+        if (context.action == "REPLACE") {
+            res.redirect(301, context.url)
+        }
+
         // 字符串模板
         res.send(`
             <html>
