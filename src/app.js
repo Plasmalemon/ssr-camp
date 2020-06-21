@@ -40,6 +40,7 @@ export default [
     },
     {
         exact: true,
-        component: Notfound
+        component: Notfound,
+        key: 'Notfound'
     }
 ]
