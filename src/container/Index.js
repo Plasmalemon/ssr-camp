@@ -3,7 +3,14 @@ import { connect } from 'react-redux'
 import { getIndexList } from '../store/index'
 import store from '../store/store'
 
+import styles from './Index.css'
+
 function Index(props) {
+    // 按道理function里边是不能写副作用的
+    if (props.staticContext) {
+        props.staticContext.css.push(styles._getCss())
+    }
+
     const [count, setCount] = useState(1)
 
     // 在server端进行
@@ -14,8 +21,8 @@ function Index(props) {
         }
     }, []);
 
-    return <div>
-        <h1>hello,{props.title}</h1>
+    return <div className={styles.container}>
+        <h1 className={styles.title}>hello,{props.title}</h1>
 
         <button onClick={() => setCount(count + 1)}>{count}</button>
         <hr />
