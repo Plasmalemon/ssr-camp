@@ -6,6 +6,8 @@ import Index from './container/Index'
 import About from './container/About'
 import User from './container/User'
 
+import './App.css'
+
 
 // export default (
 //     <div>
