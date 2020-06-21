@@ -1,5 +1,5 @@
 const path = require('path')
-
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: "development",
     entry: "./client/index.js",
@@ -22,5 +22,12 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.csr.html',
+            template: 'src/index.csr.html',
+            inject: true
+        })
+    ]
 }

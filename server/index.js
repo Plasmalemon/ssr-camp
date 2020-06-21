@@ -1,5 +1,6 @@
 // 这里的node代码，会用babel处理
-
+import path from 'path'
+import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import express from 'express'
@@ -22,7 +23,22 @@ app.use(
     createProxyMiddleware({ target: "http://localhost:9090/", changeOrigin: true })
 )
 
+function csrRender(res) {
+    // 读取文件返回
+    const filename = path.resolve(process.cwd(), 'public/index.csr.html')
+    const html = fs.readFileSync(filename, 'utf-8');
+    return res.send(html)
+}
+
 app.get('*', (req, res) => {
+    // 通过路由参数
+    // 配置开启csr
+    // 服务器负载过高开启csr
+    if (req.query._mode == 'csr') {
+        console.log('ssr开启降级渲染')
+        return csrRender(res)
+    }
+
     // 根据路由渲染组件，并且拿到loadDate方法 获取数据
     // 存储所有网络请求
     const promises = []
