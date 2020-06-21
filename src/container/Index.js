@@ -5,11 +5,13 @@ import store from '../store/store'
 
 import styles from './Index.css'
 
+import withStyle from '../withStyle'
+
 function Index(props) {
     // 按道理function里边是不能写副作用的
-    if (props.staticContext) {
-        props.staticContext.css.push(styles._getCss())
-    }
+    // if (props.staticContext) {
+    //     props.staticContext.css.push(styles._getCss())
+    // }
 
     const [count, setCount] = useState(1)
 
@@ -42,4 +44,4 @@ Index.loadData = (store) => {
 export default connect(
     state => ({ list: state.index.list }),
     { getIndexList }
-)(Index)
+)(withStyle(Index, styles))
